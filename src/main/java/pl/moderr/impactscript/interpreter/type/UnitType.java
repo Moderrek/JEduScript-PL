@@ -1,9 +1,18 @@
 package pl.moderr.impactscript.interpreter.type;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
+
 public class UnitType implements Value {
 
+  @Contract(value = " -> new", pure = true)
+  public static @NotNull UnitType empty() {
+    return new UnitType();
+  }
+
   @Override
-  public Value evaluate() throws Exception {
+  public Value evaluate(ImpactEnvironment scope) throws Exception {
     return this;
   }
 

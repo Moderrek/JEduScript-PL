@@ -2,6 +2,7 @@ package pl.moderr.impactscript.interpreter.type;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
 
 public class IntegerType implements IntegerValue {
 
@@ -21,8 +22,13 @@ public class IntegerType implements IntegerValue {
         return new IntegerType(Long.parseLong(token.value()));
     }
 
+    @Contract("_, _ -> new")
+    public static @NotNull IntegerType add(@NotNull IntegerType val, @NotNull IntegerType val2) {
+        return IntegerType.of(val.toLong() + val2.toLong());
+    }
+
     @Override
-    public Value evaluate() {
+    public Value evaluate(ImpactEnvironment scope) {
         return this;
     }
 

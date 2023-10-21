@@ -2,6 +2,7 @@ package pl.moderr.impactscript.interpreter.type;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
 
 public class BoolType implements LogicValue {
 
@@ -20,13 +21,13 @@ public class BoolType implements LogicValue {
   }
 
   @Override
-  public Value evaluate() {
+  public Value evaluate(ImpactEnvironment scope) {
     return this;
   }
 
   @Override
   public String toString() {
-    return bool ? "true" : "false";
+    return bool ? "prawda" : "falsz";
   }
 
   @Override

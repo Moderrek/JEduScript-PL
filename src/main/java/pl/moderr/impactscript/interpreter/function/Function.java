@@ -1,6 +1,9 @@
 package pl.moderr.impactscript.interpreter.function;
 
-import pl.moderr.impactscript.interpreter.Parser;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
+import pl.moderr.impactscript.interpreter.Variable;
+import pl.moderr.impactscript.interpreter.type.VariableIdentifier;
+import pl.moderr.impactscript.parser.Parser;
 import pl.moderr.impactscript.interpreter.exception.FunctionError;
 import pl.moderr.impactscript.interpreter.exception.TypeErr;
 import pl.moderr.impactscript.interpreter.statements.Expression;
@@ -14,16 +17,17 @@ import java.util.Optional;
 
 public abstract class Function<R extends Value> {
 
-  protected Parser scope;
+  protected ImpactEnvironment scope;
   protected ArrayList<Expression> arguments;
   protected HashMap<Expression, Value> argsValueMap;
 
-  public R preInvoke(Parser scope, ArrayList<Expression> arguments) throws Exception {
+  public R preInvoke(ImpactEnvironment scope, ArrayList<Expression> arguments) throws Exception {
     this.scope = scope;
     this.arguments = arguments;
     this.argsValueMap = new HashMap<>();
     return invoke();
   }
+
   public abstract R invoke() throws Exception;
 
   public abstract String getName();
@@ -53,16 +57,21 @@ public abstract class Function<R extends Value> {
         throw new TypeErr("expected " + type.toString() + ", got " + value.getClass().toString());
       }
     }
-    Value value = arguments.get(index).evaluate();
+    Value value;
+    if(arguments.get(index) instanceof VariableIdentifier var) {
+      value = ((Variable)var.evaluate(scope)).getValue();
+    } else {
+      value = arguments.get(index).evaluate(scope);
+    }
     argsValueMap.put(expression, value);
     return Optional.of((T) value);
   }
 
   protected Value invokeFunction(String name) throws Exception {
-    return scope.callFunction(name);
+    return scope.getFunction(name).invokeFunction(name);
   }
   protected Value invokeFunction(String name, Expression... args) throws Exception {
-    return scope.callFunction(name, args);
+    return scope.getFunction(name).invokeFunction(name, args);
   }
 
 }

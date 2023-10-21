@@ -1,7 +1,11 @@
 package pl.moderr.impactscript.interpreter.function;
 
 import org.jetbrains.annotations.NotNull;
-import pl.moderr.impactscript.interpreter.Parser;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
+import pl.moderr.impactscript.interpreter.exception.LexerErr;
+import pl.moderr.impactscript.interpreter.exception.NameErr;
+import pl.moderr.impactscript.interpreter.type.Token;
+import pl.moderr.impactscript.parser.Parser;
 import pl.moderr.impactscript.interpreter.statements.Expression;
 import pl.moderr.impactscript.interpreter.type.Value;
 
@@ -9,17 +13,15 @@ import java.util.ArrayList;
 
 public class FunctionCall implements Expression {
 
-  private final Function<?> function;
-  private final Parser scope;
+  private final String functionName;
   private final ArrayList<Expression> arguments = new ArrayList<>();
 
-  public FunctionCall(Parser scope, @NotNull Function<?> call) {
-    this.function = call;
-    this.scope = scope;
+  public FunctionCall(@NotNull Token token) {
+    this.functionName = token.value();
   }
 
   public String getFunctionName() {
-    return function.getName();
+    return functionName;
   }
 
   public void addArgument(Expression expression) {
@@ -31,7 +33,10 @@ public class FunctionCall implements Expression {
   }
 
   @Override
-  public Value evaluate() throws Exception {
-    return function.preInvoke(scope, arguments);
+  public Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
+    if (scope.hasDefinedFunction(functionName)) {
+      return scope.functions.get(functionName).preInvoke(scope, arguments);
+    }
+    else throw new NameErr("unknown function '" + functionName + "'");
   }
 }

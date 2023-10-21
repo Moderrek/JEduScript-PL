@@ -1,8 +1,10 @@
 package pl.moderr.impactscript.interpreter.type;
 
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
+
 public class StructType implements StructValue {
   @Override
-  public Value evaluate() throws Exception {
+  public Value evaluate(ImpactEnvironment scope) throws Exception {
     return this;
   }
 

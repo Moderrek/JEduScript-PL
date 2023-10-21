@@ -2,6 +2,7 @@ package pl.moderr.impactscript.interpreter.type;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import pl.moderr.impactscript.interpreter.ImpactEnvironment;
 
 import java.math.BigDecimal;
 
@@ -48,7 +49,7 @@ public class DecimalType implements DecimalValue {
   }
 
   @Override
-  public Value evaluate() {
+  public Value evaluate(ImpactEnvironment scope) {
     return this;
   }
 

@@ -1,49 +1,50 @@
 package pl.moderr.impactscript.interpreter;
 
-import pl.moderr.impactscript.interpreter.function.ConstFunction;;
-import pl.moderr.impactscript.interpreter.library.function.*;
-import pl.moderr.impactscript.interpreter.type.Token;
+import org.jetbrains.annotations.NotNull;
+import pl.moderr.impactscript.interpreter.function.ConstFunction;
+import pl.moderr.impactscript.interpreter.statements.Expression;
+import pl.moderr.impactscript.lib.function.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Interpreter {
 
-  public boolean debugMode = false;
+  ImpactEnvironment environment;
 
-  public String interpret(ArrayList<Token> tokens) throws Exception {
-    Parser parser = new Parser(tokens, debugMode);
-    // Function Native Library
-    parser.defineFunction(new ConstFunction("pi", Math.PI));
-    parser.defineFunction(new ConstFunction("e", Math.E));
-    parser.defineFunction(new PowFunction());
-    parser.defineFunction(new SqrtFunction());
-    parser.defineFunction(new RoundFunction());
-    parser.defineFunction(new SqrtFunction());
-    parser.defineFunction(new Log2Function());
-    parser.defineFunction(new LogFunction());
-    parser.defineFunction(new RadFunction());
-    parser.defineFunction(new AbsFunction());
-    parser.defineFunction(new SinFunction());
-    parser.defineFunction(new CosFunction());
-    parser.defineFunction(new TanFunction());
-    parser.defineFunction(new FibFunction());
-    parser.defineFunction(new FacFunction());
-    parser.defineFunction(new BoolFunction());
-    parser.defineFunction(new AndFunction());
-    parser.defineFunction(new OrFunction());
-    parser.defineFunction(new TypeofFunction());
-    parser.defineFunction(new StrFunction());
-    parser.defineFunction(new LenFunction());
-    parser.defineFunction(new NegateFunction());
-    parser.defineFunction(new IntFunction());
-    parser.defineFunction(new BinFunction());
-    parser.defineFunction(new FloatFunction());
-
-    return parser.parse();
+  public Interpreter() throws Exception {
+    environment = new ImpactEnvironment();
+    environment.defineFunction(new ConstFunction("pi", Math.PI));
+    environment.defineFunction(new ConstFunction("e", Math.E));
+    environment.defineFunction(new PotegaFunction());
+    environment.defineFunction(new PierwiastekFunction());
+    environment.defineFunction(new ZaokrFunction());
+    environment.defineFunction(new Log2Function());
+    environment.defineFunction(new LogFunction());
+    environment.defineFunction(new RadFunction());
+    environment.defineFunction(new AbsFunction());
+    environment.defineFunction(new SinFunction());
+    environment.defineFunction(new CosFunction());
+    environment.defineFunction(new TanFunction());
+    environment.defineFunction(new FibFunction());
+    environment.defineFunction(new FacFunction());
+    environment.defineFunction(new LogiFunction());
+    environment.defineFunction(new AndFunction());
+    environment.defineFunction(new LubFunction());
+    environment.defineFunction(new TypFunction());
+    environment.defineFunction(new TekstFunction());
+    environment.defineFunction(new LenFunction());
+    environment.defineFunction(new ZaprzeczFunction());
+    environment.defineFunction(new CalkFunction());
+    environment.defineFunction(new BinFunction());
+    environment.defineFunction(new FloatFunction());
+    environment.defineFunction(new WypiszFunction());
+    environment.defineFunction(new WpiszFunction());
   }
 
-  public ArrayList<Token> tokenize(String statement) throws Exception {
-    Lexer lexer = new Lexer();
-    return lexer.lex(statement, debugMode);
+  public void interpret(@NotNull List<Expression> expressions) throws Exception {
+    for (Expression expr : expressions) {
+      expr.evaluate(environment);
+    }
   }
+
 }
