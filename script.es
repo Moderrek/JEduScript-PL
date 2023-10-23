@@ -1,12 +1,11 @@
-podane = calk(wpisz("Podaj liczbe calkowita: "));#syf
-bin = binarnie(podane);;;;#;;
-#
-#
-#
-jezeli podane podzielne 2 {
-	wypisz("Podana liczba jest parzysta")
-}
-wypisz("Dziesiatkowo: " + podane) # abc
-wypisz("Binarnie: " + bin)
+a = ["1", "2", "3"]
+wypisz(a)
+b = a zawiera "4"
+wypisz(b)
+wypisz(a + "4")
+b = a zawiera "4"
+wypisz(b)
+wypisz(a)
+a = a + "4"
+wypisz(a)
 
-# mmm komentarz

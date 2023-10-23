@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'pl.moderr'
+group = 'pl.moderr.eduscript'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -18,13 +18,13 @@ dependencies {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'pl.moderr.impactscript.Main'
+                'Main-Class': 'pl.moderr.eduscript.Main'
         )
     }
 }
 
 tasks.jar {
-    manifest.attributes["Main-Class"] = "pl.moderr.impactscript.Main"
+    manifest.attributes["Main-Class"] = "pl.moderr.eduscript.Main"
 }
 
 test {
