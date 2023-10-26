@@ -7,16 +7,20 @@ import pl.moderr.eduscript.interpreter.type.Value;
 import pl.moderr.eduscript.interpreter.type.VariableIdentifier;
 
 import java.util.HashMap;
+import java.util.Stack;
 
-public class ImpactEnvironment {
+public final class ImpactEnvironment {
 
-  public final HashMap<String, Function<?>> functions;
-  public final HashMap<String, Variable> variables;
-
+  private final HashMap<String, Function<?>> functions;
+  private final HashMap<String, Variable> variables;
+  private final Stack<String> heap;
+  private String fileName;
 
   public ImpactEnvironment() {
     variables = new HashMap<>();
     functions = new HashMap<>();
+    heap = new Stack<>();
+    fileName = "<stdin>";
   }
 
   public void defineFunction(String identifier, Function<?> function) throws Exception {
@@ -62,5 +66,15 @@ public class ImpactEnvironment {
     return variables.get(identifier.identifier());
   }
 
+  public Stack<String> getHeap() {
+    return heap;
+  }
 
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
 }

@@ -8,4 +8,11 @@ wypisz(b)
 wypisz(a)
 a = a + "4"
 wypisz(a)
+{
+    jezeli prawda {}
+}
 
+wypisz(typ(1 + 0.2))
+wypisz(typ(1 + 1))
+wypisz(typ(0.2 + 0.2))
+wypisz(typ(0.2 + 1))

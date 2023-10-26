@@ -162,19 +162,19 @@ public class Parser {
     // is if
     if (match(TokenType.IF)) {
       Expression condition = op();
-      ExpressionBlock block = block();
+      Expression block = getValue();
       if (match(TokenType.ELSE, TokenType.IF)) {
         System.out.println("ELSE IF");
       } else if (match(TokenType.ELSE)) {
         System.out.println("ELSE");
       }
-      return new IfStatement(condition, block, null);
+      return new IfStatement(condition, block);
     }
     // is while
     if (match(TokenType.WHILE)) {
       Expression condition = op();
-      ExpressionBlock block = block();
-      return new WhileStatement(condition, block);
+      Expression expr = getValue();
+      return new WhileStatement(condition, expr);
     }
     // block
     if (match(TokenType.LCURLY)) {
@@ -186,16 +186,19 @@ public class Parser {
     throw new TypeErr("expected value, got " + currentToken().type() + " '" + currentToken().value() + "' @ " + (currentToken().startPos().toString()));
   }
 
-  private ExpressionBlock block() throws Exception {
+  @Contract(" -> new")
+  private @NotNull ExpressionBlock block() throws Exception {
     if (!match(TokenType.LCURLY)) throw new Exception("1");
     List<Expression> expressionList = new ArrayList<>();
-    while(currentToken().type() != TokenType.RCURLY) {
+    while(pos < tokens.size() && currentToken().type() != TokenType.RCURLY) {
       match(TokenType.END);
       expressionList.add(op());
       match(TokenType.END);
     }
     if (!match(TokenType.RCURLY)) throw new Exception("1");
-    return new ExpressionBlock(expressionList);
+    Expression[] expressions = new Expression[expressionList.size()];
+    expressionList.toArray(expressions);
+    return new ExpressionBlock(expressions);
   }
 
   private Expression op() throws Exception {
@@ -216,15 +219,17 @@ public class Parser {
     return left;
   }
 
-  public ArrayList<Expression> parseString() throws Exception {
+  public Expression[] parseString() throws Exception {
     ArrayList<Expression> expressions = new ArrayList<>();
-    if (currentToken().type() == TokenType.END || currentToken().type() == TokenType.FILE_END) return expressions;
+    if (currentToken().type() == TokenType.END || currentToken().type() == TokenType.FILE_END) return new Expression[0];
     while (currentToken().type() != TokenType.FILE_END) {
       expressions.add(op());
       match(TokenType.END);
     }
     if(currentToken().type() != TokenType.END && currentToken().type() != TokenType.FILE_END) throw new SyntaxErr("cannot reach end, got " + currentToken().type());
-    return expressions;
+    Expression[] exprs = new Expression[expressions.size()];
+    expressions.toArray(exprs);
+    return exprs;
   }
   public Expression parseLine() throws Exception {
     if (currentToken().type() == TokenType.END || currentToken().type() == TokenType.FILE_END) return null;

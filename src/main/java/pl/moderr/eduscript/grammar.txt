@@ -1,9 +1,2 @@
-2 + 2
-
-(BinOp: NumberNode + NumberNode)
--2 + 4 * 2
-(BinOp: (BinOp: (BinOp: NumberNode(0) - NumberNode(2)) + NumberNode(4)) * NumberNode(2))
-((0-2)+4)*2
-(-2 + 4) * 2
-2*2
-4
+        OPERATOR: EXPR OP EXPR (left handed)
+ ASSIGN OPERATOR: IDENTIFIER OP EXPR (right handed)

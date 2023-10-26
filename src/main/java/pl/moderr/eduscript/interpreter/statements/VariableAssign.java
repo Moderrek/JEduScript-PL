@@ -1,13 +1,14 @@
 package pl.moderr.eduscript.interpreter.statements;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import pl.moderr.eduscript.interpreter.ImpactEnvironment;
 import pl.moderr.eduscript.interpreter.Variable;
 import pl.moderr.eduscript.interpreter.type.UnitType;
 import pl.moderr.eduscript.interpreter.type.Value;
 import pl.moderr.eduscript.interpreter.type.VariableIdentifier;
 
-public class VariableAssign implements Expression {
+public final class VariableAssign implements Expression {
 
   private final VariableIdentifier identifier;
   private final Expression value;
@@ -20,7 +21,7 @@ public class VariableAssign implements Expression {
   }
 
   @Override
-  public Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
+  public @NotNull @Unmodifiable Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
     Variable variable_left;
     if (!scope.hasDefinedVariable(identifier.identifier())) {
       Value e_right = value.evaluate(scope);

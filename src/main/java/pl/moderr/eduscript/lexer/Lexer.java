@@ -25,6 +25,7 @@ public class Lexer {
       ']', TokenType.RBRACKET,
       ',', TokenType.SEPARATOR
   );
+
   private final Map<String, TokenType> keywords;
 
   public Lexer(String fileName) {
@@ -62,7 +63,7 @@ public class Lexer {
     keywords.put("wieksze", TokenType.GREATER);
     keywords.put("mniejsze", TokenType.LESS);
     keywords.put("jezeli", TokenType.IF);
-    keywords.put("i", TokenType.AND);
+    keywords.put("oraz", TokenType.AND);
     keywords.put("lub", TokenType.OR);
     keywords.put("podzielne", TokenType.DIVIDED);
     keywords.put("albo", TokenType.ELSE);

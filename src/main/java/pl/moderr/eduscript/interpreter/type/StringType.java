@@ -32,6 +32,11 @@ public final class StringType extends Value {
     return content.length();
   }
 
+  @Contract(pure = true)
+  public @NotNull String getContent() {
+    return content.toString();
+  }
+
   @Contract(" -> new")
   @Override
   public @NotNull IntegerType operatorLength() {

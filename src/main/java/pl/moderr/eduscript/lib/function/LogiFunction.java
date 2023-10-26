@@ -21,6 +21,8 @@ public class LogiFunction extends Function<BoolType> {
       return BoolType.of(decimal.toDouble() != 0);
     }
     if(value instanceof StringType str) {
+      if (str.getContent().equalsIgnoreCase("prawda")) return BoolType.TRUE;
+      if (str.getContent().equalsIgnoreCase("falsz")) return BoolType.TRUE;
       return BoolType.of(str.getLength() > 0);
     }
     throw new TypeErr(MessageFormat.format("cannot cast type {0} to bool", value.getTypeName()));

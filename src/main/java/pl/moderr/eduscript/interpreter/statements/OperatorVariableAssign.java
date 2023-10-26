@@ -1,11 +1,12 @@
 package pl.moderr.eduscript.interpreter.statements;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import pl.moderr.eduscript.interpreter.ImpactEnvironment;
 import pl.moderr.eduscript.interpreter.Variable;
 import pl.moderr.eduscript.interpreter.type.*;
 
-public class OperatorVariableAssign implements Expression {
+public final class OperatorVariableAssign implements Expression {
 
   private final VariableIdentifier id;
   private final TokenType op;
@@ -18,7 +19,7 @@ public class OperatorVariableAssign implements Expression {
   }
 
   @Override
-  public Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
+  public @NotNull @Unmodifiable Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
     if(!scope.hasDefinedVariable(id)) throw new Exception("Not defined variable " + id.identifier());
     Variable var = scope.getVariable(id);
     if(!var.isMutable()) throw new Exception("Variable " + id.identifier() + " is not mutable!");

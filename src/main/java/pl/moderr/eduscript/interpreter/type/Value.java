@@ -74,6 +74,16 @@ public abstract class Value implements Expression {
     return (T) value;
   }
 
+  public static <T extends Value> @NotNull boolean isType(@NotNull Value value, @NotNull ImpactEnvironment scope, @NotNull Class<T> type) throws Exception {
+    if (type == Value.class) return true;
+    if (!value.getClass().equals(type)) {
+      // try cast
+      Value casted = value.tryCast(type);
+      return value != casted;
+    }
+    return true;
+  }
+
   public static <T extends Value> T assertType(Value value, Class<T> type) throws TypeErr {
     if (type == Value.class) return (T) value;
     if (!value.getClass().equals(type)) throw new TypeErr("expected " + type.getSimpleName() + ", got " + value.getTypeName());

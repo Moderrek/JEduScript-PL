@@ -75,7 +75,7 @@ public final class DecimalType extends Value {
   }
 
   @Override
-  public String toString() {
+  public @NotNull String toString() {
     return value.stripTrailingZeros().toPlainString();
   }
 
@@ -90,4 +90,38 @@ public final class DecimalType extends Value {
     return this;
   }
 
+  @Override
+  public BoolType operatorEqual(@NotNull Value right, ImpactEnvironment scope) throws Exception {
+    Value value = right.tryCast(DecimalType.class);
+    if (value.getType() != ValueType.DECIMAL) return super.operatorEqual(right, scope);
+    return BoolType.of(toDouble() == ((DecimalType)value).toDouble());
+  }
+
+  @Override
+  public Value operatorPlus(Value right, ImpactEnvironment scope) throws Exception {
+    if (Value.isType(right, scope, DecimalType.class)) {
+      DecimalType to_add = Value.safeCast(right, scope, DecimalType.class);
+      return new DecimalType(toLong() + to_add.toDouble());
+    }
+    if (Value.isType(right, scope, IntegerType.class)) {
+      IntegerType to_add = Value.safeCast(right, scope, IntegerType.class);
+      return new IntegerType(toLong() + to_add.toLong());
+    }
+    return super.operatorPlus(right, scope);
+  }
+
+  @Override
+  public Value operatorMinus(Value right, ImpactEnvironment scope) throws Exception {
+    return super.operatorMinus(right, scope);
+  }
+
+  @Override
+  public Value operatorMultiply(Value right, ImpactEnvironment scope) throws Exception {
+    return super.operatorMultiply(right, scope);
+  }
+
+  @Override
+  public Value operatorDivide(Value right, ImpactEnvironment scope) throws Exception {
+    return super.operatorDivide(right, scope);
+  }
 }

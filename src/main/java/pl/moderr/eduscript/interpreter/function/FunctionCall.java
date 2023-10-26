@@ -33,7 +33,7 @@ public class FunctionCall implements Expression {
   @Override
   public Value evaluate(@NotNull ImpactEnvironment scope) throws Exception {
     if (scope.hasDefinedFunction(functionName)) {
-      return scope.functions.get(functionName).preInvoke(scope, arguments);
+      return scope.getFunction(functionName).preInvoke(scope, arguments);
     }
     else throw new NameErr("unknown function '" + functionName + "'");
   }

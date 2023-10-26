@@ -1,5 +1,7 @@
 package pl.moderr.eduscript.interpreter.type;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import pl.moderr.eduscript.interpreter.ImpactEnvironment;
 import pl.moderr.eduscript.interpreter.statements.Expression;
 
@@ -9,9 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class ListType extends Value {
+import static pl.moderr.eduscript.interpreter.type.ValueType.LIST;
 
-  private final ValueType TYPE = ValueType.LIST;
+public final class ListType extends Value {
+
+  private final ValueType TYPE = LIST;
   private final ArrayList<Expression> expressions;
   private final ArrayList<Value> value;
 
@@ -54,13 +58,14 @@ public class ListType extends Value {
     return new ListType(newExpr).evaluate(scope);
   }
 
+  @Contract(" -> new")
   @Override
-  public IntegerType operatorLength() {
+  public @NotNull IntegerType operatorLength() {
     return IntegerType.of(value.size());
   }
 
   @Override
-  public BoolType operatorContains(Value right, ImpactEnvironment scope) {
+  public @NotNull BoolType operatorContains(Value right, ImpactEnvironment scope) {
     boolean found = false;
     for (Value v : value) {
       try {
@@ -79,7 +84,7 @@ public class ListType extends Value {
   }
 
   @Override
-  public String toString() {
+  public @NotNull String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append('[');
     for (int i = 0; i < value.size(); i += 1) {

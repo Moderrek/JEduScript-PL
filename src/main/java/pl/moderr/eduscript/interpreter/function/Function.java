@@ -1,5 +1,6 @@
 package pl.moderr.eduscript.interpreter.function;
 
+import org.jetbrains.annotations.NotNull;
 import pl.moderr.eduscript.interpreter.ImpactEnvironment;
 import pl.moderr.eduscript.interpreter.Variable;
 import pl.moderr.eduscript.interpreter.exception.FunctionError;
@@ -22,11 +23,14 @@ public abstract class Function<R extends Value> {
   protected ArrayList<Expression> arguments;
   protected HashMap<Expression, Value> argsValueMap;
 
-  public R preInvoke(ImpactEnvironment scope, ArrayList<Expression> arguments) throws Exception {
+  public R preInvoke(@NotNull ImpactEnvironment scope, ArrayList<Expression> arguments) throws Exception {
     this.scope = scope;
     this.arguments = arguments;
     this.argsValueMap = new HashMap<>();
-    return invoke();
+    scope.getHeap().push(getName() + "()");
+    R val = invoke();
+    scope.getHeap().pop();
+    return val;
   }
 
   public abstract R invoke() throws Exception;

@@ -9,7 +9,7 @@ import pl.moderr.eduscript.interpreter.type.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Operator implements Expression {
+public final class Operator implements Expression {
 
   private final Expression expr_left;
   private final Expression expr_right;
@@ -63,6 +63,8 @@ public class Operator implements Expression {
         }
       };
     } catch (Exception ignored) {}
+
+    System.out.println("UNSAFE");
 
     if(e_left instanceof BoolType bool_left) {
       if(e_right instanceof BoolType bool_right) {

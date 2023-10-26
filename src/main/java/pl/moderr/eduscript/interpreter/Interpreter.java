@@ -5,9 +5,10 @@ import pl.moderr.eduscript.interpreter.function.ConstFunction;
 import pl.moderr.eduscript.interpreter.statements.Expression;
 import pl.moderr.eduscript.lib.function.*;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class Interpreter {
+public final class Interpreter {
 
   ImpactEnvironment environment;
 
@@ -41,9 +42,28 @@ public class Interpreter {
     environment.defineFunction(new WpiszFunction());
   }
 
-  public void interpret(@NotNull List<Expression> expressions) throws Exception {
-    for (Expression expr : expressions) {
-      expr.evaluate(environment);
+  public void interpret(@NotNull Expression @NotNull [] expressions) throws Exception {
+    try {
+      for (Expression expr : expressions) {
+        expr.evaluate(environment);
+      }
+    } catch (Exception e) {
+      System.err.println(environment.getFileName());
+      System.err.println(Arrays.toString(environment.getHeap().toArray()));
+      throw e;
+    }
+  }
+
+  public void interpret(@NotNull Expression @NotNull [] expressions, String fileName) throws Exception {
+    environment.setFileName(fileName);
+    try {
+      for (Expression expr : expressions) {
+        expr.evaluate(environment);
+      }
+    } catch (Exception e) {
+      System.err.println(environment.getFileName());
+      System.err.println(Arrays.toString(environment.getHeap().toArray()));
+      throw e;
     }
   }
 
